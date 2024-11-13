@@ -8,10 +8,10 @@ app.use(express.static('public'));
 // In-memory database
 const db = {
   items: {
-    '090031EB2AF9': { name: 'Apple', cost: 1.0 },
-    '150026F45D9A': { name: 'Banana', cost: 0.5 },
-    '180045AF00F2': { name: 'Orange', cost: 0.75 },
-    '19007EBFA27A': { name: 'Grapes', cost: 2.0 },
+    '090031EB2AF9': { name: 'Milk', cost: 60.0 },
+    '150026F45D9A': { name: 'Sugar', cost: 40.0 },
+    '180045AF00F2': { name: 'Bread', cost: 25.0 },
+    '19007EBFA27A': { name: 'Apple', cost: 80.0 },
   },
   carts: {},
   settledBills: [],
