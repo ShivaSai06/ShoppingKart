@@ -22,6 +22,12 @@ app.get('/', (req, res) => {
   res.sendFile('/public/index.html');
 });
 
+app.get('/clear', (req, res) => {
+  db.carts = {};
+  db.settledBills = [];
+  res.json({ status: 'done' });
+});
+
 // Add item to cart
 app.post('/addItem', (req, res) => {
   const { cartId, itemId } = req.body;
