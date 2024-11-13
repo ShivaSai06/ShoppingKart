@@ -1,0 +1,14 @@
+{
+  "name": "cart",
+  "version": "1.0.0",
+  "description": "lkjh",
+  "main": "index.js",
+  "scripts": {
+    "test": "asdf"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
