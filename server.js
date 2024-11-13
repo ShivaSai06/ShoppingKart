@@ -51,6 +51,34 @@ app.post('/addItem', (req, res) => {
   res.json({ message: 'success' });
 });
 
+// Remove item to cart
+app.post('/remItem', (req, res) => {
+  const { cartId, itemId } = req.body;
+  console.log('/remItem ', cartId, itemId);
+
+  if (!cartId || !itemId) {
+    return res.status(400).json({ error: 'Missing cartId or itemId' });
+  }
+
+  if (!db.items[itemId]) {
+    return res.status(400).json({ error: 'Invalid itemId' });
+  }
+
+  if (!db.carts[cartId]) {
+    db.carts[cartId] = [];
+  }
+
+  // const item = { ...db.items[itemId], itemId };
+  // db.carts[cartId].;
+
+  db.carts[cartId].splice(
+    db.carts[cartId].findIndex((item) => item.id === itemId),
+    1
+  );
+
+  res.json({ message: 'success' });
+});
+
 // Settle bill
 app.post('/settleBill', (req, res) => {
   const { cartId } = req.body;
