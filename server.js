@@ -31,6 +31,7 @@ app.get('/clear', (req, res) => {
 // Add item to cart
 app.post('/addItem', (req, res) => {
   const { cartId, itemId } = req.body;
+  console.log('/addItem ', cartId, itemId);
 
   if (!cartId || !itemId) {
     return res.status(400).json({ error: 'Missing cartId or itemId' });
@@ -53,6 +54,7 @@ app.post('/addItem', (req, res) => {
 // Settle bill
 app.post('/settleBill', (req, res) => {
   const { cartId } = req.body;
+  console.log('/settleBill ', cartId);
 
   if (!cartId || !db.carts[cartId]) {
     return res.status(400).json({ error: 'Invalid cartId' });
@@ -76,6 +78,7 @@ app.post('/settleBill', (req, res) => {
 
 // Get all carts and bills
 app.get('/data', (req, res) => {
+  console.log('/data');
   res.json({
     carts: db.carts,
     settledBills: db.settledBills,
