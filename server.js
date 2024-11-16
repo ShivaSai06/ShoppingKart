@@ -51,7 +51,7 @@ app.post('/addItem', (req, res) => {
   res.json({ message: 'success' });
 });
 
-// Remove item to cart
+// Remove item from cart
 app.post('/remItem', (req, res) => {
   const { cartId, itemId } = req.body;
   console.log('/remItem ', cartId, itemId);
@@ -65,18 +65,21 @@ app.post('/remItem', (req, res) => {
   }
 
   if (!db.carts[cartId]) {
-    db.carts[cartId] = [];
+    return res.status(400).json({ error: 'Cart not found' });
   }
 
-  // const item = { ...db.items[itemId], itemId };
-  // db.carts[cartId].;
-
-  db.carts[cartId].splice(
-    db.carts[cartId].findIndex((item) => item.id === itemId),
-    1
+  const itemIndex = db.carts[cartId].findIndex(
+    (item) => item.itemId === itemId
   );
 
-  res.json({ message: 'success' });
+  if (itemIndex === -1) {
+    return res.status(404).json({ error: 'Item not found in cart' });
+  }
+
+  // Remove the item from the cart
+  db.carts[cartId].splice(itemIndex, 1);
+
+  res.json({ message: 'Item removed successfully' });
 });
 
 // Settle bill
