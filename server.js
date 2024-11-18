@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('public')); // Serve static files from 'public' folder
 
 // In-memory database with stock quantities
 const db = {
@@ -17,11 +17,12 @@ const db = {
   settledBills: [],
 };
 
-// Serve static HTML
+// Serve the main HTML page (index.html) from the 'public' folder
 app.get('/', (req, res) => {
-  res.sendFile('/public/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
+// Clear all carts and settled bills (for resetting the state)
 app.get('/clear', (req, res) => {
   db.carts = {};
   db.settledBills = [];
@@ -99,7 +100,7 @@ app.post('/remItem', (req, res) => {
   });
 });
 
-// Settle bill
+// Settle the bill for a cart
 app.post('/settleBill', (req, res) => {
   const { cartId } = req.body;
   console.log('/settleBill ', cartId);
@@ -134,6 +135,7 @@ app.get('/data', (req, res) => {
   });
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
