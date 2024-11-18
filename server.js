@@ -66,17 +66,20 @@ app.post('/addItem', (req, res) => {
 // Remove item from cart
 app.post('/remItem', (req, res) => {
   const { cartId, itemId } = req.body;
-  console.log('/remItem ', cartId, itemId);
+  console.log('Request to remove item:', { cartId, itemId });
 
   if (!cartId || !itemId) {
+    console.error('Missing cartId or itemId');
     return res.status(400).json({ error: 'Missing cartId or itemId' });
   }
 
   if (!db.items[itemId]) {
+    console.error('Invalid itemId:', itemId);
     return res.status(400).json({ error: 'Invalid itemId' });
   }
 
   if (!db.carts[cartId]) {
+    console.error('Cart not found:', cartId);
     return res.status(400).json({ error: 'Cart not found' });
   }
 
@@ -85,6 +88,7 @@ app.post('/remItem', (req, res) => {
   );
 
   if (itemIndex === -1) {
+    console.error('Item not found in cart:', itemId);
     return res.status(404).json({ error: 'Item not found in cart' });
   }
 
@@ -94,14 +98,14 @@ app.post('/remItem', (req, res) => {
   // Increase the stock quantity
   db.items[itemId].stock++;
 
-  // Log the updated cart and stock for debugging
-  console.log('Updated cart:', db.carts[cartId]);
-  console.log('Updated stock:', db.items[itemId].stock);
+  // Log the updated state for debugging
+  console.log('Updated cart for cartId:', cartId, db.carts[cartId]);
+  console.log('Updated stock for itemId:', itemId, db.items[itemId].stock);
 
   res.json({
     message: 'Item removed successfully',
-    stock: db.items[itemId].stock,
-    cart: db.carts[cartId], // Return the updated cart to the client
+    cart: db.carts[cartId], // Updated cart
+    stock: db.items[itemId].stock, // Updated stock
   });
 });
 
