@@ -135,6 +135,18 @@ app.get('/data', (req, res) => {
   });
 });
 
+// **New Endpoint**: Get current stock for all items
+app.get('/stock', (req, res) => {
+  console.log('/stock');
+  const stockData = Object.entries(db.items).map(([itemId, item]) => ({
+    itemId,
+    name: item.name,
+    stock: item.stock,
+  }));
+
+  res.json(stockData);
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
