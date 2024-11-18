@@ -79,6 +79,11 @@
       .add-item-form button:hover {
         background-color: #0056b3;
       }
+      .stock-info {
+        font-size: 0.9em;
+        color: #555;
+        margin-top: 5px;
+      }
     </style>
   </head>
   <body>
@@ -179,6 +184,24 @@
         });
       }
 
+      // Fetch stock quantities for items
+      function fetchStockQuantities() {
+        fetch('/stock')
+          .then((response) => response.json())
+          .then((data) => {
+            const itemsSelect = document.getElementById('itemId');
+            const stockInfo = document.createElement('div');
+            stockInfo.className = 'stock-info';
+            const stockData = data.stockQuantities;
+            const itemId = document.getElementById('itemId').value;
+            const stockAmount = stockData[itemId] || 0;
+
+            stockInfo.innerText = `Stock: ${stockAmount} available`;
+            itemsSelect.parentNode.appendChild(stockInfo);
+          });
+      }
+
+      // Update UI by fetching carts and settled bills data
       function updateUI() {
         fetch('/data')
           .then((response) => response.json())
@@ -186,6 +209,8 @@
             renderCarts(data.carts);
             renderSettledBills(data.settledBills);
           });
+
+        fetchStockQuantities();
       }
 
       function addItem() {

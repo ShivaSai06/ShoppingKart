@@ -5,13 +5,13 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static('public'));
 
-// In-memory database
+// In-memory database with stock quantities
 const db = {
   items: {
-    '090031EB2AF9': { name: 'Milk', cost: 60.0 },
-    '150026F45D9A': { name: 'Sugar', cost: 40.0 },
-    '180045AF00F2': { name: 'Bread', cost: 25.0 },
-    '19007EBFA27A': { name: 'Apple', cost: 80.0 },
+    '090031EB2AF9': { name: 'Milk', cost: 60.0, stock: 20 },
+    '150026F45D9A': { name: 'Sugar', cost: 40.0, stock: 20 },
+    '180045AF00F2': { name: 'Bread', cost: 25.0, stock: 20 },
+    '19007EBFA27A': { name: 'Apple', cost: 80.0, stock: 20 },
   },
   carts: {},
   settledBills: [],
@@ -41,6 +41,11 @@ app.post('/addItem', (req, res) => {
     return res.status(400).json({ error: 'Invalid itemId' });
   }
 
+  // Check stock before adding item
+  if (db.items[itemId].stock <= 0) {
+    return res.status(400).json({ error: 'Item out of stock' });
+  }
+
   if (!db.carts[cartId]) {
     db.carts[cartId] = [];
   }
@@ -48,7 +53,13 @@ app.post('/addItem', (req, res) => {
   const item = { ...db.items[itemId], itemId };
   db.carts[cartId].push(item);
 
-  res.json({ message: 'success' });
+  // Decrease the stock quantity
+  db.items[itemId].stock--;
+
+  res.json({
+    message: 'Item added successfully',
+    stock: db.items[itemId].stock,
+  });
 });
 
 // Remove item from cart
@@ -79,7 +90,13 @@ app.post('/remItem', (req, res) => {
   // Remove the item from the cart
   db.carts[cartId].splice(itemIndex, 1);
 
-  res.json({ message: 'Item removed successfully' });
+  // Increase the stock quantity
+  db.items[itemId].stock++;
+
+  res.json({
+    message: 'Item removed successfully',
+    stock: db.items[itemId].stock,
+  });
 });
 
 // Settle bill
@@ -107,12 +124,13 @@ app.post('/settleBill', (req, res) => {
   res.json({ message: 'success' });
 });
 
-// Get all carts and bills
+// Get all carts, bills, and stock quantities
 app.get('/data', (req, res) => {
   console.log('/data');
   res.json({
     carts: db.carts,
     settledBills: db.settledBills,
+    stockQuantities: db.items,
   });
 });
 
