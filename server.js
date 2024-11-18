@@ -94,9 +94,14 @@ app.post('/remItem', (req, res) => {
   // Increase the stock quantity
   db.items[itemId].stock++;
 
+  // Log the updated cart and stock for debugging
+  console.log('Updated cart:', db.carts[cartId]);
+  console.log('Updated stock:', db.items[itemId].stock);
+
   res.json({
     message: 'Item removed successfully',
     stock: db.items[itemId].stock,
+    cart: db.carts[cartId], // Return the updated cart to the client
   });
 });
 
