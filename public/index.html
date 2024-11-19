@@ -249,7 +249,11 @@
           const billHtml = `
                     <div class="card">
                         <div class="cart-id">Cart ID: ${bill.cartId}</div>
-                        <div>Settled at: ${bill.timestamp}</div>
+                        <div>Settled at: ${new Date(
+                          bill.timestamp
+                        ).toLocaleString('en-IN', {
+                          timeZone: 'Asia/Kolkata',
+                        })}</div>
                         <table>
                             <tr>
                                 <th>Item Name</th>
