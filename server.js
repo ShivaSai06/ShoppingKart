@@ -15,6 +15,12 @@ const db = {
   },
   carts: {},
   settledBills: [],
+  stock: [
+    { name: 'Milk', quantity: 5 },
+    { name: 'Sugar', quantity: 5 },
+    { name: 'Bread', quantity: 5 },
+    { name: 'Apple', quantity: 5 },
+  ],
 };
 
 // Serve static HTML
@@ -46,7 +52,19 @@ app.post('/addItem', (req, res) => {
   }
 
   const item = { ...db.items[itemId], itemId };
+  let a = db.stock.find((val) => val.name == item.name);
+
+  if (a.quantity == 1) {
+    // alert(a.name + ' is out of stock');
+    db.carts[cartId].push(item);
+    a.quantity -= 1;
+    return res.json({ message: a.name + ' is out of stock' });
+  } else if (a.quantity <= 0) {
+    return res.json({ message: a.name + ' is out of stock' });
+  }
+
   db.carts[cartId].push(item);
+  a.quantity -= 1;
 
   res.json({ message: 'success' });
 });
@@ -68,8 +86,10 @@ app.post('/remItem', (req, res) => {
     return res.status(400).json({ error: 'Cart not found' });
   }
 
-  const itemIndex = db.carts[cartId].findIndex(
-    (item) => item.itemId === itemId
+  const itemIndex = db.carts[cartId].findIndex((it) => it.itemId === itemId);
+  console.log(
+    'asdf',
+    db.carts[cartId].findIndex((it) => it.itemId === itemId)
   );
 
   if (itemIndex === -1) {
@@ -78,6 +98,9 @@ app.post('/remItem', (req, res) => {
 
   // Remove the item from the cart
   db.carts[cartId].splice(itemIndex, 1);
+  const item = { ...db.items[itemId], itemId };
+  let a = db.stock.find((val) => val.name == item.name);
+  a.quantity += 1;
 
   res.json({ message: 'Item removed successfully' });
 });
@@ -113,6 +136,7 @@ app.get('/data', (req, res) => {
   res.json({
     carts: db.carts,
     settledBills: db.settledBills,
+    stock: db.stock,
   });
 });
 
