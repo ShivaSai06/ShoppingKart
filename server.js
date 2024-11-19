@@ -31,7 +31,13 @@ app.get('/', (req, res) => {
 app.get('/clear', (req, res) => {
   db.carts = {};
   db.settledBills = [];
-  res.json({ status: 'done' });
+  (db.stock = [
+    { name: 'Milk', quantity: 5 },
+    { name: 'Sugar', quantity: 5 },
+    { name: 'Bread', quantity: 5 },
+    { name: 'Apple', quantity: 5 },
+  ]),
+    res.json({ status: 'done' });
 });
 
 // Add item to cart
