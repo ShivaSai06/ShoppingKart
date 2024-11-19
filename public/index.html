@@ -116,12 +116,9 @@
           30% - 10px
         ); /* Adjusted to fit better within the form layout */
         font-size: 14px; /* Makes the text more readable */
-      }
-
-      .add-item-form select {
-        appearance: none; /* Removes browser's default dropdown styling */
-        background-color: white; /* Ensures a clean dropdown look */
-        cursor: pointer;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides overflowed text */
+        text-overflow: ellipsis; /* Adds ellipsis for overflowed text */
       }
 
       .add-item-form input:focus,
