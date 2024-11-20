@@ -95,25 +95,3 @@ The backend, implemented in `server.js`, is built using **Express.js** and provi
 
 ---
 
-## Notes
-
-- The frontend communicates with the backend through HTTP POST requests.
-- Ensure the server is running before testing the frontend.
-
----
-
-## Future Enhancements
-
-- Integrate RFID hardware for real-time item detection.
-- Add database support for cart and order management.
-- Implement user authentication for secure sessions.
-
----
-
-## License
-
-This project is open-source and distributed under the [MIT License](LICENSE).
-
---- 
-
-Feel free to modify the content as required!
