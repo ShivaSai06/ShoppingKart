@@ -16,10 +16,10 @@ const db = {
   carts: {},
   settledBills: [],
   stock: [
-    { name: 'Milk', quantity: 5 },
-    { name: 'Sugar', quantity: 5 },
-    { name: 'Bread', quantity: 5 },
-    { name: 'Apple', quantity: 5 },
+    { name: 'Milk', quantity: 50 },
+    { name: 'Sugar', quantity: 50 },
+    { name: 'Bread', quantity: 50 },
+    { name: 'Apple', quantity: 50 },
   ],
 };
 
@@ -32,10 +32,10 @@ app.get('/clear', (req, res) => {
   db.carts = {};
   db.settledBills = [];
   (db.stock = [
-    { name: 'Milk', quantity: 5 },
-    { name: 'Sugar', quantity: 5 },
-    { name: 'Bread', quantity: 5 },
-    { name: 'Apple', quantity: 5 },
+    { name: 'Milk', quantity: 50 },
+    { name: 'Sugar', quantity: 50 },
+    { name: 'Bread', quantity: 50 },
+    { name: 'Apple', quantity: 50 },
   ]),
     res.json({ status: 'done' });
 });
